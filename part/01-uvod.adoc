@@ -1,0 +1,49 @@
+Osnovni alat svakog programera je tekst editor.
+Tekst editori poseduju brojne funkcionalnosti koje olakšavaju život programera.
+
+.Neke od često dostupnih funkcionalnosti su:
+* Dijagnostike (diagnostics)
+* Dovršavanje reči (word completion)
+* Isticanje sintakse (syntax highlighting)
+* Skok na definiciju (go to definition)
+* Pronalaženje referenci (find references)
+* …
+
+Različiti ljudi imaju različite preferencije i zato postoji veliki broj različitih tekst editora.
+Takođe, pored velikog broja tekst editora, postoji i veliki broj različitih programskih jezika.
+
+Implementacija gore navedenih funkcionalnosti zavisi od programskog jezika koji se koristi.
+Prema tome, svaki tekst editor je tradicionalno morao da implementira sve funkcionalnosti za svaki programski jezik posebno.
+Dakle, postojao je problem `m*n` kompleksnosti.
+
+.Problem: matrica kompatibilnosti
+|===
+| | C | C++ | Java |  Rust | …
+
+| Vim | | | | |
+| Emacs | | | | |
+| Atom | | | | |
+| … | | | | |
+|===
+
+Bilo bi sjajno kada bi postojali zasebni jezički alati koji pružaju sve funkcionalnosti za određeni programski jezik.
+Tada bi tekst editori mogli da komuniciraju sa tim alatima i tako pruže podršku za sve programske jezike.
+Upravo to i jeste ideja Protokola jezičkih servera (Language server protocol) <<lsp>> [u daljem tekstu LSP].
+
+LSP ima za cilj da definiše standardizovan način komunikacije između jezičkih alata (servera) i samih tekst editora.
+Na ovaj način problem `m*n` kompleksnosti svodimo na `m+n` kompleksnost.
+
+[cols="<,>", width=50%]
+.Rešenje: klijenti i serveri
+|===
+| Jezički serveri: | Jezički klijenti:
+
+| C icon:check[role="green"] | Vim icon:check[role="green"]
+| C++ icon:check[role="green"] | Emacs icon:check[role="green"]
+| Java icon:check[role="green"] | Atom icon:check[role="green"]
+| Rust icon:check[role="green"] | Eclipse icon:check[role="green"]
+| … | …
+|===
+
+U ovom radu biće opisana implementacija jezičkog servera za programski jezik miniC.
+Takođe, biće prikazana integracija sa tekst editorima Vim i Atom.
