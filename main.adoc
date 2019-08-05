@@ -1,0 +1,66 @@
+= Protokol jezičkih servera
+Bojan Stipić <bojanstipic@gmail.com>
+v0.1
+:doctype: book
+// :pdf-page-layout: portrait
+// :pdf-page-size: A4
+// :pdf-page-margin: [0.75in, 1in, 0.75in, 1in]
+:lang: sr_Latn
+include::locale/attributes.adoc[]
+:toc:
+:icons: font
+:data-uri:
+ifndef::backend-pdf[:source-highlighter: highlightjs]
+ifdef::backend-pdf[:source-highlighter: rouge]
+:sectanchors:
+:sectnums:
+:show-link-uri:
+:stem:
+:imagesdir: img
+:xrefstyle: full
+
+Copyright (C) 2019 Bojan Stipić
+
+:imagesdir-old: {imagesdir}
+:imagesdir:
+image::by-nd.svg[]
+:imagesdir: {imagesdir-old}
+
+This work is licensed under the Creative Commons Attribution-NoDerivatives 4.0
+International License. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-nd/4.0/.
+
+[preface]
+== Uvod
+include::part/01-uvod.adoc[]
+
+:sectnums:
+== Programski jezik miniC
+
+== Protokol jezičkih servera
+
+== Opis softverskog rešenja
+
+:sectnums!:
+== Zaključak
+
+[bibliography]
+== Literatura
+
+* [[[lsp,1]]] Official page for Language Server Protocol, https://microsoft.github.io/language-server-protocol/
+
+[appendix]
+== Spisak korišćenih skraćenica
+
+|===
+| Skraćenica | Pun naziv
+
+|===
+
+[appendix]
+== Podaci o kandidatu
+
+Kandidat Bojan Stipić je rođen 1995. godine u Novom Sadu.
+Završio je srednju Elektrotehničku školu "Mihajlo Pupin" u Novom Sadu 2014. godine.
+Fakultet tehničkih nauka u Novom Sadu je upisao 2014. godine.
+Ispunio je sve obaveze i položio je sve ispite predviđene studijskim programom.
