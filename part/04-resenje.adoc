@@ -1,0 +1,517 @@
+U ovom poglavlju je opisan način implementacije jezičkog servera za programski jezik miniC.
+Takođe, dat je opis alata i biblioteka koje su korišćene prilikom razvoja opisanog softverskog rešenja.
+
+=== Opis korišćenih alata i biblioteka
+
+==== Flex
+
+Flex <<flex-bison>> <<flex-doc>> je program koji generiše leksički analizator, odnosno skener.
+Flex čita ulazna pravila i kao izlaz vraća kod koji implementira lekser u programskom jeziku C.
+Nastao je 1987. godine kao slobodna verzija programa Lex.
+Dostupan je pod modifikovanom BSD licencom, a njegov originalni autor je Vern Paxson.
+
+Zadatak leksičkog analizatora je skeniranje sekvence tokena u ulaznom tekstu i pronalaženje određenih šablona.
+Kada se šablon prepozna, izvršava se zadata akcija.
+Šabloni se zadaju u vidu regularnih izraza.
+Flex koristi sebi specifičnu sintaksu za zadavanje regularnih izraza, ali je ona u velikoj meri
+slična uobičajenoj ERE sintaksi koja je definisana u IEEE POSIX standardu.
+
+Primer jednostavnog Flex programa:
+[source,c]
+----
+ // Deo za definicije
+%{ //<1>
+	#include <stdio.h>
+	int brojac;
+%}
+%% //<2>
+ // Deo za pravila
+[0-9]+	{ brojac++; } //<3>
+%% //<2>
+ // Deo za proizvoljan C kod
+int main() { //<4>
+	yylex();
+	printf("%d", brojac);
+	return 0;
+}
+----
+<1> U okviru `%{` i `%}` delimitiranog bloka može se navesti proizvoljan C kod koji će
+se nepromenjen ubaciti na vrh izgenerisane datoteke.
+Koristi se za dodavanje zaglavlja i definisanje globalnih promenljivih.
+<2> Flex program se sastoji iz 3 sekcije, delimitirane karakterima `%%`.
+Prva sekcija predstavlja deo za definicije, druga sekcija predstavlja deo za pravila,
+dok treća omogućava navođenje proizvoljnog C koda koji će biti dodat na kraj izlazne datoteke.
+<3> Regularni izraz `[0-9]+` prepoznaje sve celobrojne dekadne vrednosti.
+Kada se ovo pravilo prepozna, izvršava se akcija navedena između vitičastih zagrada.
+Akcija može biti proizvoljan kod u programskom jeziku C.
+<4> Funkcija `main()` startuje leksičku analizu pozivom funkcije `yylex()`, a potom
+ispisuje koliko puta se na ulazu pojavio nerazlomljeni dekadni broj.
+
+==== Bison
+
+Bison <<flex-bison>> <<bison-doc>> je program koji generiše sintaksni analizator, odnosno parser.
+Bison čita ulazna pravila i kao izlaz vraća kod koji implementira parser u programskom jeziku C.
+Nastao je 1985. godine kao slobodna verzija programa Yacc.
+Dostupan je kao deo GNU projekta, pod GNU opštom javnom licencom, verzija 3.
+
+Sintaksnom analizom se odgovara na pitanje "Da li je raspored tokena u skladu sa gramatikom?".
+Gramatika se zadaje u BNF notaciji (Bakus-Naurova forma).
+
+Bison se često koristi u kombinaciji sa Flex-om za izradu kompajlera.
+Leksičkom analizom se prepoznaju šabloni u tekstu i tekst se deli na tokene,
+a zatim se sintaksnom analizom proverava da li se tokeni nalaze u ispravnom redosledu.
+
+.Primer jednostavnog Bison programa:
+[source,c]
+----
+ // Deo za definicije
+%% //<1>
+ // Deo za pravila
+izraz //<2>
+	: BROJ PLUS BROJ
+	| BROJ MINUS BROJ
+	;
+%% //<1>
+ // Deo za proizvoljan C kod
+----
+<1> Kao i kod Flex programa, Bison programi se sastoje iz 3 sekcije.
+Razlika je što pravila u sekciji 2 predstavljaju gramatiku jezika i definišu se u BNF notaciji.
+<2> Pravila se sastoje iz pojma sa leve strane znaka `:` koji može biti zamenjen
+sekvencom pojmova i/ili simbola sa desne strane znaka `:`.
+
+Prvi pojam koji je naveden u datoteci se uzima kao polazni pojam.
+Ako kompletan niz ulaznih tokena može da se svede na polazni pojam, tada se može reći
+da je ulaz u skladu sa gramatikom.
+
+Bison generiše LALR(1) parser, odnosno LR parser sa jednim "lookahead" tokenom.
+LR parseri spadaju u grupu bottom-up parsera, što znači da grade stablo parsiranja
+od listova ka korenu stabla.
+Parser preuzima tokene sa ulaza i pokušava da prepozna desnu stranu nekog pravila.
+Ako prepozna desnu stranu nekog pravila, zamenjuje je sa levom, odnosno radi redukciju.
+Cilj je da se stigne do polaznog pojma gramatike, odnosno do korena stabla.
+
+U nazivu LR parsera, "*L*" ("**l**eft") označava da se ulaz čita sa **l**eva na desno,
+a "*R*" ("**r**ight") označava da se koristi **d**esno izvođenje na gore.
+
+==== cJSON biblioteka za parsiranje JSON-a
+
+cJSON <<cjson-doc>> je biblioteka napisana u programskom jeziku C namenjana parsiranju JSON-a.
+S obzirom da LSP definiše razmenu poruka između klijenta i servera preko JSON objekata,
+cJSON je ključna biblioteka za implementaciju jezičkog servera opisanog u nastavku.
+
+cJSON je nastao 2009. godine, a originalni autor biblioteke je Dave Gamble.
+Biblioteka je dostupna pod MIT Expat licencom.
+
+.JSON elementi su predstavljeni sledećom strukturom:
+[source,c]
+----
+typedef struct cJSON
+{
+	struct cJSON *next;
+	struct cJSON *prev;
+	struct cJSON *child;
+	int type;
+	char *valuestring;
+	int valueint;
+	double valuedouble;
+	char *string;
+} cJSON;
+----
+
+.Parsiranje se može izvršiti pozivom sledeće funkcije:
+[source,c]
+----
+cJSON * cJSON_Parse(const char *value);
+----
+
+.Prolazak kroz strukturu i pristup poljima se obavlja pozivom sledeće funkcije:
+[source,c]
+----
+cJSON * cJSON_GetObjectItem(const cJSON * const object, const char * const string);
+----
+
+=== Opis implementacije jezičkog servera minic-lsp za programski jezik miniC
+
+U ovoj sekciji biće opisana implementacija jezičkog servera za programski jezik miniC
+koji je nazvan minic-lsp.
+
+S obzirom da jezički server mora poznavati gramatiku jezika kao i sam kompajler,
+za implementaciju minic-lsp jezičkog servera uzeta je kao osnova postojeći kompajler
+miniC jezika pod imenom micko.
+Kompajler micko je nastao na Fakultetu tehničkih nauka za potrebe edukacije na predmetu
+Programski prevodioci.
+
+.Delovi micko kompajlera koji su od značaja za ovaj projekat su:
+* Flex pravila za leksičku analizu.
+* Bison pravila za sintaksnu analizu.
+* Ručno implementiran kod za semantičke provere.
+* Tabela simbola—struktura podataka u kojoj se čuvaju deklarisani identifikatori
+i informacije o njima za potrebe semantičke analize.
+
+Jezički server ne mora da se bavi samim generisanjem asemblerskog koda,
+pa se taj deo može izostaviti.
+
+==== Razmena poruka
+
+Prvu dodatnu stvar koju treba implementirati kako bi jezički server funkcionisao je
+sama obrada poruka i slanje odgovora.
+Pošto sam LSP ne definiše transportni protokol za razmenu poruka,
+potrebno je odlučiti koji pristup će se koristiti.
+Zbog jednostavnosti implementacije izabrana je komunikacija preko standardnog ulaza/izlaza.
+
+Po startovanju programa, poziva se `lsp_event_loop` funkcija koja startuje beskonačnu
+petlju za obrađivanje poruka.
+
+.Petlja događaja:
+[source,c]
+----
+int main() {
+	lsp_event_loop();
+	return 0;
+}
+
+void lsp_event_loop(void) {
+	for(;;) {
+		unsigned long content_length = lsp_parse_header(); //<1>
+		cJSON *request = lsp_parse_content(content_length); //<2>
+		json_rpc(request); //<3>
+		cJSON_Delete(request); //<4>
+	}
+}
+----
+<1> Funkcija `lsp_parse_header` preuzima zaglavlje poruke i parsira dužinu sadržaja koji sleduje.
+<2> Funkcija `lsp_parse_content` preuzima sadržaj specificirane dužine `content_length`
+i kao rezultat vraća parsiran JSON zahtev/obaveštenje.
+<3> Funkcija `json_rpc` parsira udaljeni poziv procedure po JSON-RPC protokolu i poziva
+odgovarajuću funkciju.
+<4> Na kraju je potrebno osloboditi zauzetu memoriju pozivom `cJSON_Delete` funkcije.
+
+.Implementacija funkcije `lsp_parse_header`:
+[source,c]
+----
+unsigned long lsp_parse_header(void) {
+	char buffer[MAX_HEADER_FIELD_LEN];
+	unsigned long content_length = 0;
+
+	for(;;) { //<1>
+		fgets(buffer, MAX_HEADER_FIELD_LEN, stdin);
+		if(strcmp(buffer, "\r\n") == 0) { // End of header
+			if(content_length == 0)
+				exit(EXIT_HEADER_INCOMPLETE);
+			return content_length;
+		}
+
+		char *buffer_part = strtok(buffer, " ");
+		if(strcmp(buffer_part, "Content-Length:") == 0) { //<2>
+			buffer_part = strtok(NULL, "\n");
+			content_length = atoi(buffer_part);
+		}
+	}
+}
+----
+<1> Petlja u kojoj se preuzimaju polja iz zaglavlja poruke.
+<2> Polje od značaja je `Content-Length` koje sadrži dužinu sadržaja poruke izraženu u bajtovima.
+
+.Implementacija funkcije `lsp_parse_content`:
+[source,c]
+----
+cJSON* lsp_parse_content(unsigned long content_length) {
+	char *buffer = malloc(content_length + 1);
+	if(buffer == NULL)
+		exit(EXIT_OUT_OF_MEMORY);
+	size_t read_elements = fread(buffer, 1, content_length, stdin); //<1>
+	if(read_elements != content_length) {
+		free(buffer);
+		exit(EXIT_IO_ERROR);
+	}
+	buffer[content_length] = '\0';
+
+	cJSON *request = cJSON_Parse(buffer); //<2>
+
+	free(buffer);
+	if(request == NULL)
+		exit(EXIT_PARSE_ERROR);
+	return request;
+}
+----
+<1> Sa standardnog ulaza se čita poruka dužine `content_length`.
+Dužina je dobijena iz zaglavlja poruke.
+<2> JSON sadržaj se parsira pomoću biblioteke cJSON.
+
+.Ostale pomoćne funkcije:
+[source,c]
+----
+typedef struct {
+	const char *uri;
+	int line;
+	int character;
+} DOCUMENT_LOCATION;
+DOCUMENT_LOCATION lsp_parse_document(const cJSON *params_json); //<1>
+void lsp_send_response(int id, cJSON *result); //<2>
+void lsp_send_notification(const char *method, cJSON *params) //<3>
+----
+<1> Parsira poziciju u dokumentu.
+<2> Šalje odgovor klijentu.
+<3> Šalje obaveštenje klijentu.
+
+==== Zahtev za inicijalizaciju
+
+Po prihvatanju zahteva za inicijalizaciju, server je dužan da klijentu pošalje u odgovoru
+informaciju o LSP funkcionalnostima koje podržava.
+
+.Server minic-lsp podržava sledeće funkcionalnosti:
+. Sinhronizacija dokumenta slanjem kompletnog sadržaja dokumenta
+. Dijagnostike
+. "Lebdeće" poruke
+. Skok na definiciju
+. Dovršavanje reči
+
+Prema tome, odgovor na zahtev za inicijalizaciju sadrži informacije date u sledećem listingu.
+
+.Odgovor na zahtev za inicijalizaciju:
+[source,c]
+----
+void lsp_initialize(int id) {
+	cJSON *result = cJSON_CreateObject();
+	cJSON *capabilities = cJSON_AddObjectToObject(result, "capabilities");
+	cJSON_AddNumberToObject(capabilities, "textDocumentSync", 1);
+	cJSON_AddBoolToObject(capabilities, "hoverProvider", 1);
+	cJSON_AddBoolToObject(capabilities, "definitionProvider", 1);
+	cJSON *completion = cJSON_AddObjectToObject(capabilities, "completionProvider");
+	cJSON_AddBoolToObject(completion, "resolveProvider", 0);
+
+	lsp_send_response(id, result);
+}
+----
+
+==== Zahtev za zaustavljanje
+
+Po dobijanju poruke za zaustavljanje, server treba da oslobodi preostale zauzete resurse.
+Takođe, treba da pošalje odgovor klijentu.
+Rezultat u odgovoru treba da ima vrednost `NULL`, pa je slanje odgovora na ovaj zahtev trivijalno.
+
+.Odgovor na zahtev za zaustavljanje:
+[source,c]
+----
+void lsp_shutdown(int id) {
+	lsp_send_response(id, NULL);
+}
+----
+
+==== Obaveštenje o izlasku
+
+Po dobijanju obaveštenja o izlasku, server treba da se ugasi,
+odnosno kompletan proces treba da se zaustavi.
+Izlazni kod programa treba da bude `0`.
+
+.Obrada obaveštenja o izlasku:
+[source,c]
+----
+void lsp_exit(void) {
+	exit(0);
+}
+----
+
+==== Sinhronizacija teksta
+
+Kako bi sve funkcionalnosti jezičkog servera radile ispravno i za datoteke koje nisu
+sačuvane na medijum za trajno skladištenje podataka, potrebno je da server interno
+čuva u svojoj memoriji sadržaj svih otvorenih datoteka.
+U tu svrhu napravljen je niz bafera, gde svaki bafer sadrži URI dokumenta na koji se bafer odnosi
+i sam sadržaj u vidu stringa.
+
+.Niz bafera:
+[source,c]
+----
+typedef struct {
+	char *uri;
+	char *content;
+} BUFFER;
+
+#define BUFFER_LENGTH 100
+BUFFER buffers[BUFFER_LENGTH];
+----
+
+.Definisane su i funkcije za rukovanje baferima:
+[source,c]
+----
+BUFFER open_buffer(const char *uri, const char *content);
+BUFFER update_buffer(const char *uri, const char *content);
+BUFFER get_buffer(const char *uri);
+void close_buffer(const char *uri);
+----
+
+.Što se tiče same obrade poruka za sinhronizaciju teksta, dostupne su sledeće funkcije:
+[source,c]
+----
+void lsp_sync_open(const cJSON *params_json);
+void lsp_sync_change(const cJSON *params_json);
+void lsp_sync_close(const cJSON *params_json);
+----
+
+Navedene funkcije parsiraju zahtev, preuzimaju URI dokumenta i njihov sadržaj,
+a zatim modifikuju niz bafera pomoću funkcija za rukovanje baferima.
+Na kraju, pošto je došlo do promene nekog od bafera, poziva se funkcija `lsp_lint`
+koja šalje poruke dijagnostike klijentu.
+
+==== Dijagnostike
+
+Kada klijent pošalje serveru poruku o sinhronizaciji teksta, server je dužan
+da ponovo izračuna dijagnostike za promenjeni dokument i da pošalje `publishDiagnostics`
+obaveštenje klijentu.
+
+.Funkcija za slanje `publishDiagnostics` obaveštenja:
+[source,c]
+----
+void lsp_lint(BUFFER buffer) {
+	cJSON *params = cJSON_CreateObject(); //<1>
+	cJSON_AddStringToObject(params, "uri", buffer.uri);
+	cJSON *diagnostics = cJSON_AddArrayToObject(params, "diagnostics");
+	parse(diagnostics, buffer.content); //<2>
+	lsp_send_notification("textDocument/publishDiagnostics", params); //<3>
+}
+----
+<1> Priprema JSON odgovora.
+<2> Poziv funkcije za parsiranje dokumenta.
+<3> Slanje odgovora pozivom `lsp_send_notification` pomoćne funkcije.
+
+Funkcija za parsiranje dokumenta inicijalizuje tabelu simbola i poziva funkciju `yyparse`
+koju Bison generiše.
+Kada dođe do greške ili upozorenja prilikom parsiranja dokumenta, poziva se funkcija `yyerror`.
+Funkcija `yyerror` kreira JSON objekte dijagnostike i dodaje ih na niz dijagnostika.
+Dijagnostika pored same poruke koja se prikazuje korisniku sadrži i raspon u dokumentu
+na koji se dijagnostika odnosi.
+
+Kako bi izračunali raspon na koji se dijagnostika odnosi, koristi se ugrađena funkcionalnost
+Bison-a za čuvanje lokacija pojedinačnih simbola.
+
+.Bison automatski generiše strukturu za čuvanje lokacije u sledećem obliku:
+[source,c]
+----
+typedef struct YYLTYPE
+{
+	int first_line; //<1>
+	int first_column;
+	int last_line; //<2>
+	int last_column;
+} YYLTYPE;
+----
+<1> Polja `first_line` i `first_column` sadrže *početnu* poziciju pojave simbola.
+<2> Polja `last_line` i `last_column` sadrže *krajnju* poziciju pojave simbola.
+
+Kako bi dobili lokaciju željenog simbola, Bison uvodi specijalne `@*` promenljive.
+Ove promenljive se mogu koristiti u sklopu akcija.
+Za dobijanje lokacije n-te komponente desne strane pravila, koriste se `@n` promenljive.
+Za dobijanje lokacije pojma sa leve strane koristi se `@$` promenljiva.
+
+.Na primer:
+[source,c]
+----
+variable
+	: type _ID _SEMICOLON
+		{
+			printf(
+				"%d.%d-%d.%d",
+				@2.first_line,
+				@2.first_column,
+				@2.last_line,
+				@2.last_column
+			);
+		}
+	;
+----
+
+U prethodnom primeru, token `_ID` se nalazi na drugoj poziciji desne strane pravila.
+Prema tome, njegova pozicija se nalazi u promenljivoj `@2` tipa `YYLTYPE`.
+
+==== "Lebdeće" poruke
+
+"Lebdeće" poruke omogućavaju korisniku da sazna dodatne informacije o nekom identifikatoru.
+Za razliku od dijagnostika, LSP server izdaje informacije na zahtev korisnika,
+a ne automatski, pa klijent mora prvo poslati zahtev serveru.
+
+S obzirom da tabela simbola već sadrži sve informacije o simbolima za potrebe
+semantičke analize, možemo je iskoristiti i za "lebdeće" poruke.
+
+Klijent u zahtevu šalje poziciju na kojoj se kursor nalazio.
+Pošto simbol mora biti definisan pre upotrebe, parseru je dovoljno proslediti
+samo deo dokumenta od početka do pozicije kursora.
+Na taj način dobijamo ubrzanje jer nema potrebe parsirati ceo dokument.
+Takođe, tabela simbola je implementirana tako da se iz nje brišu lokalne promenljive
+kada se završi parsiranje funkcije, što nije poželjno u ovom slučaju, pa to izbegavamo
+"skraćivanjem" dokumenta.
+
+.Funkcija za obrađivanje `hover` zahteva:
+[source,c]
+----
+void lsp_hover(int id, const cJSON *params_json) {
+	DOCUMENT_LOCATION document = lsp_parse_document(params_json); //<1>
+
+	BUFFER buffer = get_buffer(document.uri); //<2>
+	char *text = strdup(buffer.content);
+	truncate_string(text, document.line, document.character); //<3>
+	const char *symbol_name  = extract_last_symbol(text);
+	cJSON *contents = symbol_info(symbol_name, text); //<4>
+	free(text);
+
+	if(contents == NULL) {
+		lsp_send_response(id, NULL);
+		return;
+	}
+	cJSON *result = cJSON_CreateObject(); //<5>
+	cJSON_AddItemToObject(result, "contents", contents);
+	lsp_send_response(id, result); //<6>
+}
+----
+<1> Parsiranje zahteva i preuzimanje pozicije u dokumentu.
+<2> Preuzimanje bafera iz liste bafera na osnovu URI-ja.
+<3> "Skraćivanje" dokumenta.
+<4> Poziv funkcije `symbol_info`.
+Ova funkcija poziva parser, a zatim iz tabele simbola preuzima dodatne informacije
+o simbolu i pravi njihovu JSON reprezentaciju.
+<5> Kreiranje odgovora.
+<6> Slanje odgovora.
+
+==== Skok na definiciju
+
+Skok na definiciju se implementira na sličan način kao i "lebdeće" poruke.
+
+.Funkcija za obrađivanje ovih vrsta poruka je deklarisana na sledeći način:
+[source,c]
+----
+void lsp_goto_definition(int id, const cJSON *params_json);
+----
+
+Zahtev se parsira i preuzima se pozicija u dokumentu na kojoj se kursor nalazi.
+Dokument se "skraćuje" do pozicije kursora, a zatim se poziva parser.
+U tabeli simbola se pronalazi željeni simbol i informacije o njegovoj lokaciji se preuzimaju.
+Lokacija se pretvara u JSON reprezentaciju i šalje nazad klijentu.
+
+Implementacija tabele simbola u micko kompajleru ne sadrži lokacije simbola,
+pa je potrebno proširiti tabelu simbola.
+
+.Proširena tabela simbola:
+[source,c]
+----
+typedef struct sym_entry {
+	// ...
+	SYMBOL_RANGE range; //<1>
+} SYMBOL_ENTRY;
+----
+<1> `SYMBOL_RANGE` predstavlja strukturu sa istim poljima kao i `YYLTYPE`.
+
+==== Dovršavanje reči
+
+.Funkcija za obrađivanje ovih vrsta poruka je deklarisana na sledeći način:
+[source,c]
+----
+void lsp_completion(int id, const cJSON *params_json);
+----
+
+Kao i prethodne dve funkcionalnosti opisane u ovom poglavlju, i zahtev
+za dovršavanje reči sadrži poziciju u dokumentu na kojoj se kursor nalazi.
+Nakon parsiranja pozicije, preuzima se bafer i "skraćuje" do pozicije kursora.
+Zatim se poziva funkcija `symbol_completion`.
+
+Funkcija `symbol_completion` pokreće parser, a zatim pronalazi u tabeli simbola
+sve simbole čiji naziv počinje navedenim karakterima.

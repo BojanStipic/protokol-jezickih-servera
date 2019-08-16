@@ -42,6 +42,8 @@ include::part/02-lsp.adoc[]
 == Programski jezik miniC
 
 == Opis softverskog rešenja
+include::part/04-resenje.adoc[]
+
 
 :sectnums!:
 == Zaključak
@@ -51,6 +53,10 @@ include::part/02-lsp.adoc[]
 
 * [[[lsp,1]]] Official page for Language Server Protocol, https://microsoft.github.io/language-server-protocol/, Avgust 2018.
 * [[[lsp-org,2]]] A community-driven source of knowledge for Language Server Protocol implementations, https://langserver.org/, Avgust 2018.
+* [[[flex-bison,3]]] Zorica Suvajdžin Rakić, Predrag Rakić, Flex & Bison
+* [[[flex-doc,4]]] Flex zvanična dokumentacija, https://westes.github.io/flex/manual/, Avgust 2018.
+* [[[bison-doc,5]]] Bison zvanična dokumentacija, https://www.gnu.org/software/bison/manual/, Avgust 2018.
+* [[[cjson-doc,6]]] cJSON repozitorijum, https://github.com/DaveGamble/cJSON, Avgust 2018.
 
 [appendix]
 == Spisak korišćenih skraćenica
