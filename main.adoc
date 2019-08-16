@@ -36,9 +36,10 @@ http://creativecommons.org/licenses/by-nd/4.0/.
 include::part/01-uvod.adoc[]
 
 :sectnums:
-== Programski jezik miniC
-
 == Protokol jezičkih servera
+include::part/02-lsp.adoc[]
+
+== Programski jezik miniC
 
 == Opis softverskog rešenja
 
@@ -48,7 +49,8 @@ include::part/01-uvod.adoc[]
 [bibliography]
 == Literatura
 
-* [[[lsp,1]]] Official page for Language Server Protocol, https://microsoft.github.io/language-server-protocol/
+* [[[lsp,1]]] Official page for Language Server Protocol, https://microsoft.github.io/language-server-protocol/, Avgust 2018.
+* [[[lsp-org,2]]] A community-driven source of knowledge for Language Server Protocol implementations, https://langserver.org/, Avgust 2018.
 
 [appendix]
 == Spisak korišćenih skraćenica
@@ -56,6 +58,7 @@ include::part/01-uvod.adoc[]
 |===
 | Skraćenica | Pun naziv
 
+| LSP | Protokol jezičkih servera (Language server protocol)
 |===
 
 [appendix]
