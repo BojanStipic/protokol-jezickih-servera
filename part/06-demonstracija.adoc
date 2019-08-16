@@ -1,0 +1,36 @@
+<<lint>> prikazuje Vim tekst editor sa otvorenom test datotekom.
+Linije 3 i 8 su podvučene crvenom linijom, a sa leve strane se vide znakovi `>>`,
+što označava grešku u navedenim linijama.
+U donjoj polovini editora vidljiva je lista svih dijagnostika za otvorenu datoteku.
+
+Takođe, može se videti da je korisnik postavio kursor na liniju 9,
+na slovo *r* u identifikatoru `var1`, a zatim je zatražio informacije u vidu "lebdeće" poruke.
+Na osnovu informacija koje su vidljive, korisnik može saznati da je `var1` tipa `int`.
+U slučaju da identifikator na kojem se nalazi kursor predstavlja naziv funkcije,
+vidljivi su tipovi parametara koje funkcija prihvata kao i tip povratne vrednosti funkcije.
+
+[[lint]]
+.Demonstracija rada dijagnostika i "lebdećih" poruka.
+image::01-lint.png[align="center"]
+
+<<complete>> prikazuje Vim tekst editor sa otvorenom test datotekom koja sadrži
+dve funkcije. U funkciji `main` su definisane dve lokalne promenljive.
+Korisnik u liniji 6 unosi karaktere `lang`, nakon čega tekst editor automatski otvara
+padajući meni sa dostupnim opcijama koje se mogu dopuniti.
+U padajućem meniju se pored teksta dopune vidi i kako izgleda deklaracija simbola.
+Na osnovu deklaracije korisnik može saznati kojeg tipa su promenljive,
+koje parametre prihvata funkcija, kojeg tipa je povratna vrednost funkcije…
+
+[[complete]]
+.Demonstracija rada dovršavanja reči.
+image::02-complete.png[align="center"]
+
+<<goto>> prikazuje funkcionalnost skoka na definiciju.
+Sa leve strane je prikazana inicijalna pozicija kursora.
+Korisnik je pozicionirao kursor na poziv `f2` funkcije.
+Korisnik inicira komandu skoka na definiciju i kursor se prebacuje na poziciju
+gde je funkcija definisana, kao što se može videti na desnoj polovini slike.
+
+[[goto]]
+.Demonstracija rada skoka na definiciju.
+image::03-goto.png[align="center"]

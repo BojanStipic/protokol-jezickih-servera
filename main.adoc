@@ -47,6 +47,8 @@ include::part/04-resenje.adoc[]
 == Integracija servera sa tekst editorima
 include::part/05-integracija.adoc[]
 
+== Demonstracija rada jezičkog servera minic-lsp
+include::part/06-demonstracija.adoc[]
 
 :sectnums!:
 == Zaključak
