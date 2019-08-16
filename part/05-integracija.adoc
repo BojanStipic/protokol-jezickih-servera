@@ -1,0 +1,110 @@
+Samim tim što je implementiran jezički server za miniC programski jezik,
+svi editori teksta koji poznaju zajednički LSP jezik automatski dobijaju podršku za miniC.
+
+.Da bi korisnik počeo da koristi jezički server, potrebno je da uradi sledeće:
+. Jezički server treba instalirati na neku od putanja u `$PATH` varijabli.
+. U podešavanjima tekst editora treba specificirati koji jezički serveri se koriste za koje programske jezike.
+Editoru je potreban samo naziv izvršne datoteke jezičkog servera, kako bi znao koji program da startuje.
+Nikakve dodatne informacije editoru nisu potrebne, jer svi serveri pričaju zajednički LSP jezik.
+
+Server minic-lsp može se preuzeti sa link:https://github.com/BojanStipic/minic-lsp[Github-a].
+
+.Instalacija se vrši pozivom sledećih komandi:
+[source,bash]
+----
+meson build --prefix=<installation/path>
+ninja -C build install
+----
+
+Prethodno je potrebno instalirati Meson build sistem.
+
+Kako bi bilo prikazano da implementacija jezičkog servera ne zavisi od tekst editora,
+u ovom poglavlju prikazana je integracija sa dva različita tekst editora.
+Naravno, minic-lsp radi i sa bilo kojim drugim tekst editorom koji razume LSP.
+Za demonstraciju izabrani su tekst editori Vim i Atom.
+
+=== Vim
+
+Vim <<vim>> je konfigurabilni tekst editor namenjen efikasnom kreiranju i modifikovanju tekst dokumenata.
+Nastao je 1991. godine, a originalni autor je Bram Moolenaar.
+Vim je slobodni softver dostupan pod licencom koja ohrabruje korisnike da doniraju
+novac deci u Ugandi.
+Licenca je kompatibilna sa GNU opštom javnom licencom kroz specijalnu klauzulu
+koja dozvoljava distribuciju modifikovanih kopija pod GPL verzijom 2 ili novijom.
+
+U vreme pisanja ovog rada, poslednja dostupna verzija Vim-a je `8.1` i ne postoji
+ugrađena podrška za LSP.
+Ipak, pošto je Vim proširiv kroz plugin-e pisane u Vimscript jeziku,
+postoje razna proširenja pomoću kojih Vim postaje LSP klijent.
+
+Plugin koji je izabran za ovu demonstraciju se zove ALE (Asynchronous Lint Engine) <<vim-ale>>.
+ALE je takođe slobodni softver dostupan pod BSD licencom sa dve klauzule.
+
+ALE podrazumevano podešavanje već sadrži spisak popularnih jezičkih servera koje će pokušati da startuje.
+Kako bi se korisniku olakšalo dodavanje minic-lsp servera, u sklopu ovog rada napravljena je konfiguracija
+u vidu Vim plugin-a dostupna na link:https://github.com/BojanStipic/minic-lsp-ale/[Github-u].
+
+.Sadržaj plugina je samo jedna datoteka sa potrebnim podešavanjima:
+[source,vim]
+----
+function! ale_linters#c#miniclsp#GetProjectRoot(buffer) abort #<1>
+	return fnamemodify(bufname(a:buffer), ':p:h') #<2>
+endfunction
+
+call ale#linter#Define('c', { #<3>
+\	'name': 'minic-lsp',
+\	'lsp': 'stdio', #<4>
+\	'executable': 'minic-lsp', #<5>
+\	'command': '%e',
+\	'project_root_callback': 'ale_linters#c#miniclsp#GetProjectRoot',
+\})
+----
+<1> Pomoćna funkcija koja određuje korenski direktorijum projekta.
+<2> Jezik miniC ne podržava podelu projekta na više datoteka, pa je korenski direktorijum
+uvek direktorijum u kojem se nalazi otvorena datoteka.
+<3> Definicija novog LSP servera.
+<4> Za transportni protokol se koristi standardni ulaz.
+<5> Naziv izvršne datoteke servera.
+
+=== Atom
+
+Atom <<atom>> je "hakabilni tekst editor 21. veka" napravljen od strane Github kompanije 2014. godine.
+Atom je slobodni softver dostupan pod MIT Expat licencom.
+Baziran je na Electron platformi za razvijanje aplikacija.
+
+U vreme pisanja ovog rada, poslednja dostupna verzija Atom-a je `1.40` i ne postoji
+ugrađena podrška za LSP.
+Međutim, Atom je takođe proširiv kroz plugin-e i dostupno je proširenje pomoću
+kojeg Atom postaje LSP klijent.
+
+Plugin koji Atom pretvara u LSP klijent se zove atom-ide <<atom-ide>> i razvijen je
+od strane Facebook kompanije.
+Dostupan je kao slobodni softver pod BSD licencom sa tri klauzule.
+
+Kako bi se korisniku olakšalo dodavanje minic-lsp servera, u sklopu ovog rada napravljena je konfiguracija
+u vidu Atom plugin-a dostupna na link:https://github.com/BojanStipic/minic-lsp-atom/[Github-u].
+Plugin se instalira pozivom sledeće komande `apm install BojanStipic/minic-lsp-atom`.
+
+.Sadržaj plugina je samo jedna datoteka sa potrebnim podešavanjima:
+[source,coffeescript]
+----
+const cp = require('child_process');
+const { shell } = require("electron");
+const {AutoLanguageClient} = require('atom-languageclient')
+const PACKAGE_NAME = require('../package.json').name;
+
+class MiniCLanguageClient extends AutoLanguageClient {
+  getGrammarScopes () { return [ 'source.c' ]; }
+  getLanguageName () { return 'C'; }
+  getServerName () { return 'minic-lsp'; } //<1>
+
+  startServerProcess (projectPath) { //<2>
+	const config = atom.config.get(PACKAGE_NAME);
+	const childProcess = cp.spawn(config.miniclspCommand, [], {cwd: projectPath});
+	return childProcess;
+  }
+}
+module.exports = new MiniCLanguageClient()
+----
+<1> Naziv izvršne datoteke servera.
+<2> Funkcija koja startuje proces.

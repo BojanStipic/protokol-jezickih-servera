@@ -44,6 +44,9 @@ include::part/02-lsp.adoc[]
 == Opis softverskog rešenja
 include::part/04-resenje.adoc[]
 
+== Integracija servera sa tekst editorima
+include::part/05-integracija.adoc[]
+
 
 :sectnums!:
 == Zaključak
@@ -57,6 +60,10 @@ include::part/04-resenje.adoc[]
 * [[[flex-doc,4]]] Flex zvanična dokumentacija, https://westes.github.io/flex/manual/, Avgust 2018.
 * [[[bison-doc,5]]] Bison zvanična dokumentacija, https://www.gnu.org/software/bison/manual/, Avgust 2018.
 * [[[cjson-doc,6]]] cJSON repozitorijum, https://github.com/DaveGamble/cJSON, Avgust 2018.
+* [[[vim,7]]] Vim tekst editor, https://www.vim.org/, Avgust 2018.
+* [[[vim-ale,8]]] ALE plugin za Vim tekst editor, https://github.com/dense-analysis/ale, Avgust 2018.
+* [[[atom,9]]] Atom tekst editor, https://atom.io/, Avgust 2018.
+* [[[atom-ide,10]]] atom-ide plugin za Atom tekst editor, https://ide.atom.io/, Avgust 2018.
 
 [appendix]
 == Spisak korišćenih skraćenica
