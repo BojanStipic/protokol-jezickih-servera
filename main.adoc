@@ -8,6 +8,7 @@ v0.1
 :lang: sr_Latn
 include::locale/attributes.adoc[]
 :toc:
+:toclevels: 3
 :icons: font
 :data-uri:
 ifndef::backend-pdf[:source-highlighter: highlightjs]
