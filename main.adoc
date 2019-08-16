@@ -77,6 +77,20 @@ include::part/06-demonstracija.adoc[]
 |===
 
 [appendix]
+== Spisak repozitorijuma
+
+|===
+| URL repozitorijuma | Opis
+
+| https://github.com/BojanStipic/minic-lsp | Jezički server minic-lsp za programski jezik miniC.
+| https://github.com/BojanStipic/minic-lsp-ale | Plugin za konfiguraciju Vim editora da koristi minic-lsp
+| https://github.com/BojanStipic/minic-lsp-atom | Plugin za konfiguraciju Atom editora da koristi minic-lsp
+|===
+
+[appendix]
+== Izvorni kod softverskog rešenja
+
+[appendix]
 == Podaci o kandidatu
 
 Kandidat Bojan Stipić je rođen 1995. godine u Novom Sadu.
