@@ -66,5 +66,8 @@ include::part/02-lsp.adoc[]
 
 Kandidat Bojan Stipić je rođen 1995. godine u Novom Sadu.
 Završio je srednju Elektrotehničku školu "Mihajlo Pupin" u Novom Sadu 2014. godine.
-Fakultet tehničkih nauka u Novom Sadu je upisao 2014. godine.
+Fakultet tehničkih nauka u Novom Sadu, smer Računarstvo i automatika,
+usmerenje Primenjene računarske nauke i informatika je upisao 2014. godine.
+Osnovne akademske studije završio je 2018. godine i iste godine je upisao
+master studije na Fakultetu tehničkih nauka.
 Ispunio je sve obaveze i položio je sve ispite predviđene studijskim programom.
