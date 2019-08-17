@@ -1,0 +1,129 @@
+Programski jezik miniC <<minic>> <<minic-paper>> je nastao na Fakultetu tehničkih nauka, Univerziteta u Novom Sadu,
+za potrebe kursa Programski prevodioci.
+
+miniC je striktan podskup programskog jezika C.
+Dakle, miniC programe je moguće kompajlirati regularnim C kompajlerom, dok obrnuto ne važi.
+Nastao je odabirom osobina i koncepata C jezika koji su interesantni za implementaciju kompajlera.
+Međutim, ove osobine su uzete u određenoj meri kako bi se olakšala implementacija kompajlera.
+Autori su se uzdržali od mnogih karakteristika C jezika koji nepotrebno komplikuju
+implementaciju kompajlera, a koji, u edukativnom smislu, ne doprinose značajno.
+
+'''
+
+U nastavku ovog poglavlja opisana je sintaksa miniC jezika.
+
+Najmanji miniC *program* ima bar jednu *funkciju*.
+Mora postojati tačno jedna *funkcija* `main` i njena povratna vrednost treba da bude tipa `int`.
+
+miniC podržava samo `int` i `unsigned` *tipove* podataka, odnosno označene i neoznačene
+celobrojne vrednosti.
+
+*Zaglavlje funkcije* se sastoji od *tipa* povratne vrednosti funkcije, naziva funkcije,
+kao i para zagrada u kojima se može navesti *parametar* funkcije.
+*Funkcije* mogu imati maksimalno jedan *parametar*.
+
+Posle *zaglavlja* se navodi par vitičastih zagrada u kojima se nalazi *telo funkcije*.
+*Telo funkcije* se sastoji od *deklaracija lokalnih promenljivih* i od *iskaza*, u tom redosledu.
+Može postojati proizvoljan broj *deklaracija promenljivih* i *iskaza*.
+
+*Deklaracija promenljive* sadrži *tip* i naziv promenljive, a završava se separatorom `;`.
+U jednoj deklaraciji, moguće je deklarisati samo jednu promenljivu.
+Da bi se deklarisale dve promenljive, potrebno je napisati dve *deklaracije*.
+
+.*Iskazi* koji mogu da se pojave u *telu funkcije* su:
+* *Iskaz dodele*.
+* *`if` iskaz*.
+* *`return` iskaz*.
+* *Blok iskaza*.
+
+U *iskazima* se koriste *numerički izrazi*.
+*Numerički izraz* se gradi od *literala*, identifikatora promenljivih i *poziva funkcija*.
+Od aritmetičkih operacija podržano je sabiranje i oduzimanje.
+Moguće je koristiti i zagrade za određivanje prioriteta operacija.
+
+*Poziv funkcije* se sastoji iz naziva funkcije i para zagrada u kojima se može navesti *argument*.
+
+*Iskaz dodele* se sastoji od znaka `=`, gde se sa njegove leve strane nalazi identifikator promenljive,
+a sa desne strane *numerički izraz*.
+
+*`if` iskaz* se sastoji od ključne reči `if`, iza koje se nalazi uslov unutar para zagrada.
+Posle uslova se navodi *iskaz*.
+Opciono, *`if` iskaz* može sadržati i `else` deo koji se sastoji od ključne reči `else` i *iskaza*.
+Uslov predstavlja *relacioni izraz*.
+
+*`return` iskaz* očekuje da se iza ključne reči `return` navede *numerički izraz*,
+čija će vrednost biti povratna vrednost *funkcije* u kojoj se nalazi.
+
+*Blok iskaza* čine iskazi napisani u vitičastim zagradama.
+Blok može biti i prazan.
+
+*Komentari* započinju znacima `//` i traju do kraja linije.
+
+'''
+
+U nastavku je data kompletna gramatika miniC jezika, napisana korišćenjem BNF notacije.
+Razmak i kraj linije imaju funkciju separatora simbola.
+
+.Simboli (terminals):
+[listing]
+----
+      _letter ::= "a"|"A"|"b"|"B"|"c"|"C"|"d"|"D"
+                 |"e"|"E"|"f"|"F"|"g"|"G"|"h"|"H"
+                 |"i"|"I"|"j"|"J"|"k"|"K"|"l"|"L"
+                 |"m"|"M"|"n"|"N"|"o"|"O"|"p"|"P"
+                 |"q"|"Q"|"r"|"R"|"s"|"S"|"t"|"T"
+                 |"u"|"U"|"v"|"V"|"w"|"W"|"x"|"X"
+                 |"y"|"Y"|"z"|"Z"
+       _digit ::= "0"|"1"|"2"|"3"|"4"|"5"|"6"|"7"
+                 |"8"|"9"
+  _identifier ::= letter ( letter | digit )*
+ _int_literal ::= digit +
+_uint_literal ::= digit + ( "u" | "U" )
+----
+
+.Pojmovi (nonterminals):
+[listing]
+----
+        program ::= function_list
+  function_list ::= function
+                  | function_list function
+       function ::= type _identifier "(" param ")" body
+           type ::= "int"
+                  | "unsigned"
+          param ::=
+                  | type _identifier
+           body ::= "{" variable_list stmt_list "}"
+  variable_list ::=
+                  | variable_list variable
+       variable ::= type _identifier ";"
+      stmt_list ::=
+                  | stmt_list stmt
+           stmt ::= compound_stmt
+                  | assignment_stmt
+                  | if_stmt
+                  | return_stmt
+  compound_stmt ::= "{" stmt_list "}"
+assignment_stmt ::= _identifier "=" num_exp ";"
+        num_exp ::= exp
+                  | num_exp "+" exp
+                  | num_exp "-" exp
+            exp ::= literal
+                  | _identifier
+                  | function_call
+                  | "(" num_exp ")"
+        literal ::= _int_literal
+                  | _uint_literal
+  function_call ::= _identifier "(" argument ")"
+       argument ::=
+                  | num_exp
+        if_stmt ::= if_part
+                  | if_part "else" stmt
+        if_part ::= "if" "(" rel_exp ")" stmt
+        rel_exp ::= num_exp "<" num_exp
+                  | num_exp ">" num_exp
+                  | num_exp "<=" num_exp
+                  | num_exp ">=" num_exp
+                  | num_exp "==" num_exp
+                  | num_exp "!=" num_exp
+    return_stmt ::= "return" num_exp ";"
+----
