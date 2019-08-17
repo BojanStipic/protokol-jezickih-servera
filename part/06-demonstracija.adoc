@@ -34,3 +34,50 @@ gde je funkcija definisana, kao što se može videti na desnoj polovini slike.
 [[goto]]
 .Demonstracija rada skoka na definiciju.
 image::03-goto.png[align="center"]
+
+<<komunikacija>> prikazuje primer razmene LSP poruka između servera i klijenta (tekst editora),
+na osnovu akcija koje korisnik izvršava.
+
+[[komunikacija]]
+.Primer LSP komunikacije
+image::04-lsp-komunikacija.png[align="center"]
+////
+[plantuml, lsp-komunikacija, png]
+....
+actor Korisnik
+participant "Klijent (tekst editor)" as Klijent
+
+Korisnik ->> Klijent : Korisnik startuje tekst editor
+Klijent -> Server : Zahtev za inicijalizaciju
+Klijent <- Server : Odgovor na zahtev za inicijalizaciju
+Klijent --> Server : Obaveštenje o završenoj inicijalizaciji
+|||
+Korisnik ->> Klijent : Korisnik otvara dokument
+Klijent --> Server : Obaveštenje o `didOpen` događaju
+Klijent <-- Server : Obaveštenje o dijagnostikama
+Korisnik <<- Klijent : Korisniku se prikazuju dijagnostike
+|||
+Korisnik ->> Klijent : Korisnik pozicionira kursor i traži "lebdeću" poruku
+Klijent -> Server : Zahtev za "lebdeću" poruku
+Klijent <- Server : Odgovor na zahtev za "lebdeću" poruku
+Korisnik <<- Klijent : Korisniku se prikazuje "lebdeća" poruka
+|||
+Korisnik ->> Klijent : Korisnik pravi izmene na dokumentu
+Klijent --> Server : Obaveštenje o `didChange` događaju
+Klijent <-- Server : Obaveštenje o dijagnostikama
+Klijent -> Server : Zahtev za dovršavanje reči
+Klijent <- Server : Odgovor na zahtev za dovršavanje reči
+Korisnik <<- Klijent : Korisniku se prikazuju dijagnostike
+Korisnik <<- Klijent : Korisniku se prikazuju opcije za dovršavanje reči u padajućem meniju
+|||
+Korisnik ->> Klijent : Korisnik pozicionira kursor i traži skok na definiciju
+Klijent -> Server : Zahtev za skok na definiciju
+Klijent <- Server : Odgovor na zahtev za skok na definiciju
+Korisnik <<- Klijent : Kursor se pozicionira na mesto definicije simbola
+|||
+Korisnik ->> Klijent : Korisnik zatvara tekst editor
+Klijent -> Server : Zahtev za zaustavljanje
+Klijent <- Server : Odgovor na zahtev za zaustavljanje
+Klijent --> Server : Obaveštenje o zaustavljanju
+....
+////
