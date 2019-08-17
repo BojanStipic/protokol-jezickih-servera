@@ -137,11 +137,11 @@ koji je nazvan minic-lsp.
 
 S obzirom da jezički server mora poznavati gramatiku jezika kao i sam kompajler,
 za implementaciju minic-lsp jezičkog servera uzeta je kao osnova postojeći kompajler
-miniC jezika pod imenom micko.
-Kompajler micko je nastao na Fakultetu tehničkih nauka za potrebe edukacije na predmetu
+miniC jezika pod imenom MICKO.
+Kompajler MICKO je nastao na Fakultetu tehničkih nauka za potrebe edukacije na predmetu
 Programski prevodioci.
 
-.Delovi micko kompajlera koji su od značaja za ovaj projekat su:
+.Delovi MICKO kompajlera koji su od značaja za ovaj projekat su:
 * Flex pravila za leksičku analizu.
 * Bison pravila za sintaksnu analizu.
 * Ručno implementiran kod za semantičke provere.
@@ -487,7 +487,7 @@ Dokument se "skraćuje" do pozicije kursora, a zatim se poziva parser.
 U tabeli simbola se pronalazi željeni simbol i informacije o njegovoj lokaciji se preuzimaju.
 Lokacija se pretvara u JSON reprezentaciju i šalje nazad klijentu.
 
-Implementacija tabele simbola u micko kompajleru ne sadrži lokacije simbola,
+Implementacija tabele simbola u MICKO kompajleru ne sadrži lokacije simbola,
 pa je potrebno proširiti tabelu simbola.
 
 .Proširena tabela simbola:
