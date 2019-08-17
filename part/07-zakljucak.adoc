@@ -1,0 +1,37 @@
+Korisnici danas imaju visoka očekivanja od tekst editora.
+Iz tog razloga, tekst editori su veoma kompleksni programi, sa velikim brojem mogućnosti.
+Pritom, većina funkcionalnosti je usko povezana sa programskim jezikom u kojem je dokument napisan.
+Na primer, da bi editor podržavao isticanje sintakse, on mora poznavati kompletnu gramatiku jezika.
+
+Kako programskih jezika vremenom ima sve više, tako je i razvoj tekst editora postao sve kompleksniji.
+
+Rešenje ovog problema je razvoj posebnih jezičkih servera koji pružaju "pametne" funkcionalnosti
+za pojedinačne programske jezike.
+Tekst editor više ne mora da poznaje sintaksu ili semantiku jezika, već samo treba
+da se integriše sa jezičkim serverom.
+
+Međutim, razdvajanjem tekst editora od jezičkih servera, rešen je jedan problem, ali
+je nastao novi problem—njihova integracija.
+Jezički serveri su koristili različite formate poruka za komunikaciju.
+Tekst editori su morali na različite načine parsirati poruke koje dobijaju od jezičkih servera,
+a morali su poznavati i različite poruke za zadavanje upita.
+
+Kako bi se problem integracije rešio, Microsoft je razvio protokol jezičkih servera.
+Razvojem zajedničkog jezika kojim jezički serveri komuniciraju, postalo je moguće da
+tekst editori napišu integracioni kod samo jednom i da ga koriste za sve postojeće i buduće programske jezike.
+
+LSP je uopšten protokol koji je jezički neutralan.
+Poruke su bazirane na JSON-RPC protokolu, a LSP specifikacija je slobodno dostupna.
+
+Iako je LSP relativno nov protokol (nastao je 2016. godine), postao je veoma rasprostranjen
+i danas postoje jezički serveri za skoro sve popularne programske jezike,
+a podržan je i od većine tekst editora i integrisanih razvojnih okruženja.
+
+Razvojem LSP-a, razlika između običnih tekst editora i integrisanih razvojnih okruženja postaje sve manja.
+Tekst editori podržavaju većinu funkcionalnosti i jezički su neutralni, pa nestaje potreba
+za specijalizovanim integrisanim razvojnim okruženjima.
+Korisnici mogu da koriste tekst editor sa kojim su već upoznati za sve projekte, bez obzira
+na programski jezik koji se koristi.
+
+Pisanje kompletnog softverskog rešenja u okviru ovog rada je olakšano uz pomoć LSP-a.
+Korišćen je Vim tekst editor i Clangd jezički server za programski jezik C.

@@ -53,6 +53,7 @@ include::part/06-demonstracija.adoc[]
 
 :sectnums!:
 == Zaključak
+include::part/07-zakljucak.adoc[]
 
 [bibliography]
 == Literatura
