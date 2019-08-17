@@ -2,7 +2,12 @@
 **Master rad**
 
 ## Generisanje master rada
-Rad se generiše u PDF i HTML formatu pozivom `make` komande.
+Rad se generiše u PDF i HTML formatu pozivom `make` komande:
+
+```bash
+git clone --recurse-submodules 'https://github.com/BojanStipic/protokol-jezickih-servera'
+make
+```
 
 Potrebno je prethodno instalirati `asciidoctor` i `asciidoctor-pdf`:
 
