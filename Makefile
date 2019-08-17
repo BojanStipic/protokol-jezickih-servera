@@ -1,5 +1,5 @@
 TARGET = protokol-jezickih-servera
-SRC = main.adoc part/* img/* locale/*
+SRC = main.adoc src.adoc part/* img/* locale/*
 .PHONY: all clean
 
 all: ${TARGET}.pdf ${TARGET}.html

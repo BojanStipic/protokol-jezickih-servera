@@ -94,6 +94,7 @@ include::part/07-zakljucak.adoc[]
 
 [appendix]
 == Izvorni kod softverskog rešenja
+include::src.adoc[]
 
 [appendix]
 == Podaci o kandidatu
