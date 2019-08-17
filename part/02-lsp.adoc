@@ -1,14 +1,36 @@
 === Istorija i motivacija
 
-LSP je kreiran od strane Microsoft-a kako bi definisali zajednički jezik kojim jezički alati komuniciraju.
+LSP je kreiran od strane Microsoft-a kako bi se definisao zajednički jezik kojim jezički alati komuniciraju.
 Nastao je 2016. godine, a pored Microsofta su se udružile i druge kompanije, kao što su Red Hat, Codenvy i Sourcegraph,
 kako bi podržali njegov rast.
+
+Inicijalno, Microsoft je razvio OmniSharp projekat sa ciljem da pruži "pametne" funkcionalnosti za programski jezik C#
+u tekst editorima.
+OmniSharp je inicijalno koristio HTTP protokol za razmenu JSON poruka.
+Ubrzo je integrisan u nekoliko tekst editora, a jedan od njih bio je VS Code,
+koji je takođe razvijen od strane Microsoft-a.
+
+U istom vremenskom periodu, Microsoft je počeo sa razvojem još jednog jezičkog servera.
+Ovaj jezički server je imao za cilj da podrži programski jezik TypeScript.
+Koristio je standardni ulaz/izlaz kao transportni protokol,
+a poruke su bile u JSON formatu po uzoru na V8 debugger protokol.
+
+Kada je tim zadužen za razvoj VS Code editora integrisao i TypeScript jezički server,
+uvideli su da je konzumacija jezičkih servera suvišno komplikovana.
+Kako bi pojednostavili integraciju, počeli su da razmišljaju o opštem zajedničkom protokolu <<lsp-history>>.
+
+Zajednički protokol omogućio bi da se integracioni kod napiše samo jednom,
+i da se koristi za sve jezičke servere koji pričaju zajednički jezik.
+
+Zajednički protokol je kao osnovu koristio protokol TypeScript jezičkog servera,
+koji je uopšten i napravljen da bude jezički neutralan.
+
+U početku, protokol je podržavao poruke dijagnostike, a kasnije je obogaćen ostalim
+"pametnim" funkcionalnostima koje jedan server može da pruži.
+
 Danas je LSP podržan od strane velikog broja tekst editora i jezičkih zajednica.
 LSP je otvoren protokol i kompletna specifikacija je slobodno dostupna na
 link:https://github.com/Microsoft/language-server-protocol[GitHub-u].
-
-Pre nego što je LSP razvijen, većina jezičkih servisa je bila vezana za određeni tekst editor ili integrisano razvojno okruženje.
-Pružanje istog servisa u više različitih alata za editovanje je zahtevalo veliki trud kako bi se postojeći kod adaptirao.
 
 Razvojem standardizovanog protokola, postalo je dovoljno da jezička zajednica napravi
 jedan jezički server koji pruža sve "pametne" funkcionalnosti za dati programski jezik.
