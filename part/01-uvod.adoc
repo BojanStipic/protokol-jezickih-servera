@@ -28,7 +28,7 @@ Dakle, postojao je problem `m*n` kompleksnosti.
 
 Bilo bi sjajno kada bi postojali zasebni jezički alati koji pružaju sve funkcionalnosti za određeni programski jezik.
 Tada bi tekst editori mogli da komuniciraju sa tim alatima i tako pruže podršku za sve programske jezike.
-Upravo to i jeste ideja Protokola jezičkih servera (Language server protocol) <<lsp>> <<lsp-org>> [u daljem tekstu LSP].
+Upravo to i jeste ideja Protokola jezičkih servera (Language server protocol) <<lsp>> <<lsp-org>> [skraćeno LSP].
 
 LSP ima za cilj da definiše standardizovan način komunikacije između jezičkih alata (servera) i samih tekst editora.
 Na ovaj način problem `m*n` kompleksnosti svodimo na `m+n` kompleksnost.
@@ -45,5 +45,21 @@ Na ovaj način problem `m*n` kompleksnosti svodimo na `m+n` kompleksnost.
 | … | …
 |===
 
-U ovom radu biće opisana implementacija jezičkog servera za programski jezik miniC.
-Takođe, biće prikazana integracija sa tekst editorima Vim i Atom.
+U ovom radu opisana je implementacija jezičkog servera minic-lsp za programski jezik miniC.
+Takođe, prikazana je integracija sa tekst editorima Vim i Atom.
+
+Rad se sastoji iz pet poglavlja.
+
+U prvom poglavlju nalazi se istorija i motivacija za razvoj protokola jezičkih servera,
+kao i tehnički detalji specifikacije neophodni za razvoj jezičkog servera.
+
+U drugom poglavlju opisan je programski jezik miniC i data je njegova kompletna gramatika.
+
+Treće poglavlje opisuje softversko rešenje i sastoji se iz dve sekcije.
+U prvoj sekciji opisani su alati i biblioteke koje su korišćene za implementaciju rešenja.
+Druga sekcija sadrži opis same implementacije minic-lsp jezičkog servera.
+
+Četvrto poglavlje opisuje način integracije postojećeg servera sa tekst editorima.
+Takođe, data je konfiguracija u vidu plugin-a za integraciju minic-lsp servera sa editorima Vim i Atom.
+
+U petom poglavlju demonstriran je rad kompletnog softverskog rešenja na konkretnim primerima.
