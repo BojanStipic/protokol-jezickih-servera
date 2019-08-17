@@ -1,0 +1,9 @@
+[submodule "minic-lsp"]
+	path = minic-lsp
+	url = https://github.com/BojanStipic/minic-lsp
+[submodule "minic-lsp-atom"]
+	path = minic-lsp-atom
+	url = https://github.com/BojanStipic/minic-lsp-atom
+[submodule "minic-lsp-ale"]
+	path = minic-lsp-ale
+	url = https://github.com/BojanStipic/minic-lsp-ale
