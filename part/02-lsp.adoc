@@ -18,13 +18,11 @@ a poruke su bile u JSON formatu po uzoru na V8 debugger protokol.
 Kada je tim zadužen za razvoj VS Code editora integrisao i TypeScript jezički server,
 uvideli su da je konzumacija jezičkih servera suvišno komplikovana.
 Kako bi pojednostavili integraciju, počeli su da razmišljaju o opštem zajedničkom protokolu <<lsp-history>>.
-
 Zajednički protokol omogućio bi da se integracioni kod napiše samo jednom,
 i da se koristi za sve jezičke servere koji pričaju zajednički jezik.
 
 Zajednički protokol je kao osnovu koristio protokol TypeScript jezičkog servera,
 koji je uopšten i napravljen da bude jezički neutralan.
-
 U početku, protokol je podržavao poruke dijagnostike, a kasnije je obogaćen ostalim
 "pametnim" funkcionalnostima koje jedan server može da pruži.
 
@@ -43,7 +41,7 @@ LSP nije ograničen samo na programske jezike, već se može koristiti i za bilo
 Tekst editor se ponaša kao klijent koji komunicira sa jezičkim serverom.
 Komunikacija se odvija slanjem poruka.
 
-U osnovi, poruka se sastoji iz *zaglavlja* (header) i *sadržaja* (content), slično kao i HTTP protokol.
+U osnovi, poruka se sastoji iz *zaglavlja* (_header_) i *sadržaja* (_content_), slično kao i HTTP protokol.
 Zaglavlje i sadržaj su razdvojeni `\r\n` karakterima.
 
 Specifikacijom nije određen transportni protokol za razmenu poruka.
@@ -55,7 +53,8 @@ Na klijentu je da odluči kada će startovati server i kada će ga zaustaviti.
 
 ==== Zaglavlje poruke
 
-Zaglavlje se sastoji iz polja. Svako polje je par ključ-vrednost, razdvojeni sa `:{nbsp}` (dvotačka praćena razmakom).
+Zaglavlje se sastoji iz polja.
+Svako polje je par ključ-vrednost, razdvojeni sa `:{nbsp}` (dvotačka praćena razmakom).
 Svako polje se završava karakterima `\r\n`.
 
 .Podržana polja u zaglavlju:
@@ -68,7 +67,7 @@ Svako polje se završava karakterima `\r\n`.
 ==== Sadržaj poruke
 
 Sadržaj poruke koji se razmenjuje između klijenta i servera je baziran na JSON-RPC protokolu.
-JSON-RPC je protokol koji omogućava udaljen poziv procedura (remote procedure call) razmenom poruka u JSON formatu.
+JSON-RPC je protokol koji omogućava udaljen poziv procedura (_remote procedure call_) razmenom poruka u JSON formatu.
 
 U zvaničnoj LSP specifikaciji, JSON poruke koje se razmenjuju su opisane kroz TypeScript objekte.
 Isti način opisivanja poruka će biti korišćen i u ovom radu.
@@ -86,9 +85,9 @@ interface Message {
 <1> LSP uvek koristi vrednost `"2.0"` kao verziju.
 
 .Sve poruke se dele na 3 varijante:
-. *Zahtev* (request)—upućen zahtev između klijenta i servera. Svaki zahtev mora imati odgovor.
-. *Odgovor* (response)—odgovor na upućen zahtev.
-. *Obaveštenje* (notification)—slično zahtevu, ali ne zahteva odgovor.
+. *Zahtev* (_request_)—upućen zahtev između klijenta i servera. Svaki zahtev mora imati odgovor.
+. *Odgovor* (_response_)—odgovor na upućen zahtev.
+. *Obaveštenje* (_notification_)—slično zahtevu, ali ne zahteva odgovor.
 
 ===== Zahtev
 
@@ -158,7 +157,7 @@ type DocumentUri = string; //<1>
 ----
 <1> Preko mreže se URI prenosi kao običan string, ali je zbog jasnoće u specifikaciji prikazan kao poseban tip.
 
-.Pozicija (position):
+.Pozicija (_position_):
 [source,typescript]
 ----
 interface Position {
@@ -167,9 +166,10 @@ interface Position {
 }
 ----
 <1> Redni broj linije (indeksiranje kreće od nule).
-<2> Pomeraj (offset) karaktera u liniji. Vrednost `character` predstavlja prostor između `character` i `character + 1`.
+<2> Pomeraj (_offset_) karaktera u liniji.
+Vrednost `character` predstavlja prostor između `character` i `character + 1`.
 
-.Raspon (range):
+.Raspon (_range_):
 [source,typescript]
 ----
 interface Range { //<1>
@@ -179,7 +179,7 @@ interface Range { //<1>
 ----
 <1> Raspon se može posmatrati kao selekcija u editoru.
 
-.Lokacija (location):
+.Lokacija (_location_):
 [source,typescript]
 ----
 interface Location { //<1>
@@ -189,7 +189,7 @@ interface Location { //<1>
 ----
 <1> Predstavlja lokaciju unutar resursa. Na primer određena linija u datoteci.
 
-.Identifikator dokumenta (text document identifier):
+.Identifikator dokumenta (_text document identifier_):
 [source,typescript]
 ----
 interface TextDocumentIdentifier {
@@ -198,7 +198,7 @@ interface TextDocumentIdentifier {
 ----
 <1> Dokumenti se identifikuju na osnovu URI-ja.
 
-.Dokument (text document item):
+.Dokument (_text document item_):
 [source,typescript]
 ----
 interface TextDocumentItem { //<1>
@@ -210,7 +210,7 @@ interface TextDocumentItem { //<1>
 ----
 <1> Predstavlja jednu stavku prenosa dokumenta od klijenta do servera.
 
-.Pozicija u dokumentu (text document position)
+.Pozicija u dokumentu (_text document position_)
 [source,typescript]
 ----
 interface TextDocumentPositionParams { //<1>
@@ -222,7 +222,7 @@ interface TextDocumentPositionParams { //<1>
 
 ==== Poruke za upravljanje životnim ciklusom servera
 
-===== Zahtev za inicijalizaciju (initialize request)
+===== Zahtev za inicijalizaciju (*_initialize request_*)
 
 Zahtev za inicijalizaciju se šalje kao prvi zahtev serveru od strane klijenta.
 
@@ -252,7 +252,8 @@ interface InitializeParams {
 }
 ----
 <1> Identifikator roditeljskog procesa koji je startovao server.
-<2> URI korenskog direktorijuma radnog okruženja. U slučaju da nijedan direktorijum nije otvoren ima vrednost `null`.
+<2> URI korenskog direktorijuma radnog okruženja.
+U slučaju da nijedan direktorijum nije otvoren ima vrednost `null`.
 <3> LSP funkcionalnosti koje klijent podržava.
 
 .Odgovor na zahtev za inicijalizaciju:
@@ -275,7 +276,7 @@ interface ServerCapabilities { //<2>
 <1> LSP funkcionalnosti koje server podržava.
 <2> Prikazane neke od mogućih funkcionalnosti.
 
-===== Zahtev za zaustavljanje (shutdown request)
+===== Zahtev za zaustavljanje (*_shutdown request_*)
 
 Zahtev za zaustavljanje se šalje serveru od strane klijenta.
 
@@ -319,7 +320,6 @@ Tekst editor obaveštava jezički server o događajima, odnosno interakcijama ko
 `didClose`:: Korisnik je zatvorio datoteku.
 
 Jezički server treba da "sluša" događaje i interno vodi evidenciju o svim otvorenim datotekama i njihovim sadržajem.
-
 Kada se dogodi određeni događaj, klijent u poruci ne šalje samo URI dokumenta već njegov kompletan sadržaj u vidu stringa.
 Ovo je neophodno kako bi sve funkcionalnosti radile bez potrebe da korisnik prethodno sačuva datoteku na medijum za trajno čuvanje podataka.
 
@@ -456,7 +456,7 @@ u nastavku će pored prethodno opisanih poruka o dijagnostici biti opisane još 
 U implementaciji jezičkog servera za programski jezik miniC, koja će biti opisana u nastavku rada,
 takođe će biti implementirane ove 4 funkcionalnosti.
 
-===== Dovršavanje reči (word completion)
+===== Dovršavanje reči (*_word completion_*)
 
 Automatsko dovršavanje reči može pomoći ako u kodu postoje dugački identifikatori.
 Dovoljno je da korisnik ukuca nekoliko početnih slova, a zatim će mu tekst editor prikazati
@@ -496,7 +496,7 @@ interface CompletionItem {
 <1> Sadržaj koji će dopuniti ako se izabere ta stavka iz liste.
 <2> Dodatne informacije koje će biti prikazane korisniku.
 
-===== "Lebdeće" (hover) poruke
+===== "Lebdeće" (*_hover_*) poruke
 
 Klijent može zatražiti od servera dodatne informacije o identifikatoru koje se prikazuju u vidu "lebdeće" poruke korisniku.
 
@@ -520,7 +520,7 @@ interface Hover {
 <1> Informacije koje se prikazuju korisniku, napisane u Markdown formatu.
 <2> Opciono može sadržati i raspon u tekst dokumentu kako bi editor vizuelno drugačije prikazao identifikator.
 
-===== Skok na definiciju (go to definition)
+===== Skok na definiciju (*_go to definition_*)
 
 Skok na definiciju se može koristiti kao jedan od načina za navigaciju kroz kod.
 

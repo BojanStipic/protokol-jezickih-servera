@@ -1,4 +1,4 @@
-Programski jezik miniC <<minic>> <<minic-paper>> je nastao na Fakultetu tehničkih nauka, Univerziteta u Novom Sadu,
+Programski jezik miniC je nastao na Fakultetu tehničkih nauka, Univerziteta u Novom Sadu,
 za potrebe kursa Programski prevodioci.
 
 miniC je striktan podskup programskog jezika C.
@@ -64,7 +64,7 @@ Blok može biti i prazan.
 U nastavku je data kompletna gramatika miniC jezika, napisana korišćenjem BNF notacije.
 Razmak i kraj linije imaju funkciju separatora simbola.
 
-.Simboli (terminals):
+.Simboli (_terminals_):
 [listing]
 ----
       _letter ::= "a"|"A"|"b"|"B"|"c"|"C"|"d"|"D"
@@ -81,7 +81,7 @@ Razmak i kraj linije imaju funkciju separatora simbola.
 _uint_literal ::= digit + ( "u" | "U" )
 ----
 
-.Pojmovi (nonterminals):
+.Pojmovi (_nonterminals_):
 [listing]
 ----
         program ::= function_list

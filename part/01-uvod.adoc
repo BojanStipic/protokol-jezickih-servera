@@ -2,11 +2,11 @@ Osnovni alat svakog programera je tekst editor.
 Tekst editori poseduju brojne funkcionalnosti koje olakšavaju život programera.
 
 .Neke od često dostupnih funkcionalnosti su:
-* Dijagnostike (diagnostics)
-* Dovršavanje reči (word completion)
-* Isticanje sintakse (syntax highlighting)
-* Skok na definiciju (go to definition)
-* Pronalaženje referenci (find references)
+* Dijagnostike (_diagnostics_)
+* Dovršavanje reči (_word completion_)
+* Isticanje sintakse (_syntax highlighting_)
+* Skok na definiciju (_go to definition_)
+* Pronalaženje referenci (_find references_)
 * …
 
 Različiti korisnici imaju različite potrebe pri korišćenju tekst editora, pa stoga i potreba za velikim brojem istih.
@@ -45,7 +45,7 @@ Na ovaj način problem `m*n` kompleksnosti svodimo na `m+n` kompleksnost.
 | … | …
 |===
 
-U ovom radu opisana je implementacija jezičkog servera minic-lsp za programski jezik miniC.
+U ovom radu opisana je implementacija jezičkog servera minic-lsp za programski jezik miniC <<minic>> <<minic-paper>>.
 Takođe, prikazana je integracija sa tekst editorima Vim i Atom.
 
 Rad se sastoji iz pet poglavlja.
