@@ -1,6 +1,6 @@
 = Protokol jezičkih servera
 Bojan Stipić <bojanstipic@gmail.com>
-v0.1
+v1.1
 :doctype: book
 // :pdf-page-layout: portrait
 // :pdf-page-size: A4
