@@ -4,7 +4,7 @@ v1.1
 :doctype: book
 // :pdf-page-layout: portrait
 // :pdf-page-size: A4
-// :pdf-page-margin: [0.75in, 1in, 0.75in, 1in]
+:pdf-page-margin: [0.7in, 0.98in, 0.7in, 0.98in]
 :lang: sr_Latn
 include::locale/attributes.adoc[]
 :toc:
