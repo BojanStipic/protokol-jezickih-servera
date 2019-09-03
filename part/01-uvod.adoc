@@ -11,7 +11,6 @@ Tekst editori poseduju brojne funkcionalnosti koje olakšavaju život programera
 
 Različiti korisnici imaju različite potrebe pri korišćenju tekst editora, pa stoga i potreba za velikim brojem istih.
 Takođe, pored velikog broja tekst editora, postoji i veliki broj različitih programskih jezika.
-
 Implementacija gore navedenih funkcionalnosti zavisi od programskog jezika koji se koristi.
 Prema tome, svaki tekst editor je tradicionalno morao da implementira sve funkcionalnosti za svaki programski jezik posebno.
 Dakle, postojao je problem `m*n` kompleksnosti.
@@ -26,12 +25,12 @@ Dakle, postojao je problem `m*n` kompleksnosti.
 | … | | | | |
 |===
 
-Bilo bi sjajno kada bi postojali zasebni jezički alati koji pružaju sve funkcionalnosti za određeni programski jezik.
+Bilo bi pogodnije kada bi postojali zasebni jezički alati koji pružaju "pametne" funkcionalnosti za pojedinačne programske jezike.
 Tada bi tekst editori mogli da komuniciraju sa tim alatima i tako pruže podršku za sve programske jezike.
 Upravo to i jeste ideja Protokola jezičkih servera (Language server protocol) <<lsp>> <<lsp-org>> [skraćeno LSP].
 
 LSP ima za cilj da definiše standardizovan način komunikacije između jezičkih alata (servera) i samih tekst editora.
-Na ovaj način problem `m*n` kompleksnosti svodimo na `m+n` kompleksnost.
+Na ovaj način problem `m*n` kompleksnosti svodi se na `m+n` kompleksnost.
 
 [cols="<,>", width=50%]
 .Rešenje: klijenti i serveri

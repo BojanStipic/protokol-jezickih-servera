@@ -83,15 +83,15 @@ Prvi pojam koji je naveden u datoteci se uzima kao polazni pojam.
 Ako kompletan niz ulaznih tokena može da se svede na polazni pojam, tada se može reći
 da je ulaz u skladu sa gramatikom.
 
-Bison generiše LALR(1) parser, odnosno LR parser sa jednim "lookahead" tokenom.
-LR parseri spadaju u grupu bottom-up parsera, što znači da grade stablo parsiranja
+Bison generiše LALR(1) parser, odnosno LR parser sa jednim "_lookahead_" tokenom.
+LR parseri spadaju u grupu _bottom-up_ parsera, što znači da grade stablo parsiranja
 od listova ka korenu stabla.
 Parser preuzima tokene sa ulaza i pokušava da prepozna desnu stranu nekog pravila.
 Ako prepozna desnu stranu nekog pravila, zamenjuje je sa levom, odnosno radi redukciju.
 Cilj je da se stigne do polaznog pojma gramatike, odnosno do korena stabla.
 
-U nazivu LR parsera, "*L*" ("**l**eft") označava da se ulaz čita sa **l**eva na desno,
-a "*R*" ("**r**ight") označava da se koristi **d**esno izvođenje na gore.
+U nazivu LR parsera, "*L*" ("_**l**eft_") označava da se ulaz čita sa **l**eva na desno,
+a "*R*" ("_**r**ight_") označava da se koristi **d**esno izvođenje na gore.
 
 ==== cJSON biblioteka za parsiranje JSON-a
 

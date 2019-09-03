@@ -61,7 +61,7 @@ Svako polje se završava karakterima `\r\n`.
 |===
 | Ključ | Vrednost | Opis polja
 | `Content-Length` | celobrojna vrednost | Dužina sadržaja poruke u bajtovima. *Obavezno polje*.
-| `Content-Type` | string | Mime tip sadržaja. Podrazumevana vrednost je `application/vscode-jsonrpc; charset=utf-8`.
+| `Content-Type` | string | MIME tip sadržaja. Podrazumevana vrednost je `application/vscode-jsonrpc; charset=utf-8`.
 |===
 
 ==== Sadržaj poruke
@@ -314,8 +314,8 @@ a u suprotnom izlazni kod treba da bude `1`.
 Tekst editor obaveštava jezički server o događajima, odnosno interakcijama koje korisnik vrši nad dokumentima.
 
 .Neki od mogućih događaja su:
-`didOpen`:: Korisnik otvorio datoteku.
-`didChange`:: Korisnik napravio izmene u datoteci.
+`didOpen`:: Korisnik je otvorio datoteku.
+`didChange`:: Korisnik je napravio izmene u datoteci.
 `didSave`:: Korisnik je sačuvao datoteku.
 `didClose`:: Korisnik je zatvorio datoteku.
 
