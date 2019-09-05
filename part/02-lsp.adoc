@@ -319,7 +319,7 @@ Tekst editor obaveštava jezički server o događajima, odnosno interakcijama ko
 `didSave`:: Korisnik je sačuvao datoteku.
 `didClose`:: Korisnik je zatvorio datoteku.
 
-Jezički server treba da "sluša" događaje i interno vodi evidenciju o svim otvorenim datotekama i njihovim sadržajem.
+Jezički server treba da "sluša" događaje i interno vodi evidenciju o svim otvorenim datotekama i njihovim sadržajima.
 Kada se dogodi određeni događaj, klijent u poruci ne šalje samo URI dokumenta već njegov kompletan sadržaj u vidu stringa.
 Ovo je neophodno kako bi sve funkcionalnosti radile bez potrebe da korisnik prethodno sačuva datoteku na medijum za trajno čuvanje podataka.
 
@@ -416,7 +416,8 @@ Iz tog razloga ovakve poruke su implementirane kao obaveštenja, a ne kao par za
 
 Kada određena dijagnostika više nije aktuelna, server je dužan da pošalje osveženu listu klijentu.
 Ukoliko je lista dijagnostika prazna, server je dužan da pošalje praznu listu klijentu.
-Stara lista dijagnostika se uvek zamenjuje novom listom, klijent ne vrši spajanje lista ni na koji način.
+Stara lista dijagnostika se uvek zamenjuje novom listom.
+Klijent ne vrši spajanje lista ni na koji način.
 
 .Obaveštenje o dijagnostici:
 [source,typescript]
@@ -442,7 +443,7 @@ interface Diagnostic {
 	// ...
 }
 ----
-<1> Raspon u dokumentu za koji se dijagnostika odnosi.
+<1> Raspon u dokumentu na koji se dijagnostika odnosi.
 <2> Ozbiljnost greške. Može imati vrednost od `1` do `4`, u zavisnosti od toga da li je u pitanju
 greška (`error`), upozorenje (`warning`), informacija (`information`), ili nagoveštaj (`hint`) respektivno.
 <3> Poruka koja se prikazuje korisniku.

@@ -10,7 +10,7 @@ U slučaju da identifikator na kojem se nalazi kursor predstavlja naziv funkcije
 vidljivi su tipovi parametara koje funkcija prihvata kao i tip povratne vrednosti funkcije.
 
 [[lint]]
-.Demonstracija rada dijagnostika i "lebdećih" poruka.
+.Demonstracija rada dijagnostika i "lebdećih" poruka
 image::01-lint.png[align="center"]
 
 <<complete>> prikazuje Vim tekst editor sa otvorenom test datotekom koja sadrži
@@ -22,7 +22,7 @@ Na osnovu deklaracije korisnik može saznati kojeg tipa su promenljive,
 koje parametre prihvata funkcija, kojeg tipa je povratna vrednost funkcije…
 
 [[complete]]
-.Demonstracija rada dovršavanja reči.
+.Demonstracija rada dovršavanja reči
 image::02-complete.png[align="center"]
 
 <<goto>> prikazuje funkcionalnost skoka na definiciju.
@@ -32,7 +32,7 @@ Korisnik inicira komandu skoka na definiciju i kursor se prebacuje na poziciju
 gde je funkcija definisana, kao što se može videti na desnoj polovini slike.
 
 [[goto]]
-.Demonstracija rada skoka na definiciju.
+.Demonstracija rada skoka na definiciju
 image::03-goto.png[align="center"]
 
 <<komunikacija>> prikazuje primer razmene LSP poruka između servera i klijenta (tekst editora),
