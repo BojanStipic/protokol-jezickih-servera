@@ -61,9 +61,11 @@ include::part/07-zakljucak.adoc[]
 * [[[lsp,1]]] Official page for Language Server Protocol, https://microsoft.github.io/language-server-protocol/, Avgust 2019.
 * [[[lsp-org,2]]] A community-driven source of knowledge for Language Server Protocol implementations, https://langserver.org/, Avgust 2019.
 * [[[lsp-history,3]]] Language server protocol history, https://github.com/Microsoft/language-server-protocol/wiki/Protocol-History, Avgust 2019.
-* [[[minic,4]]] Zorica Suvajdžin Rakić, miniC jezik
+* [[[minic,4]]] Zorica Suvajdžin Rakić i Miroslav Hajduković, miniC, specifikacija i implementacija, zbirka zadataka,
+Univerzitet u Novom Sadu, FTN, Edicija tehničke nauke - udžbenici, FTN Izdavaštvo, Novi Sad, 2014
 * [[[minic-paper,5]]] Zorica Suvajdžin Rakić, Predrag Rakić, Tara Petrić, miniC Project for Teaching Compilers Course, ICIST 2014
-* [[[flex-bison,6]]] Zorica Suvajdžin Rakić, Predrag Rakić, Flex & Bison
+* [[[flex-bison,6]]] Zorica Suvajdžin Rakić i Predrag Rakić, flex & bison, zbirka zadataka,
+Univerzitet u Novom Sadu, FTN, Edicija tehničke nauke - udžbenici, broj 478, FTN Izdavaštvo, Novi Sad, 2014
 * [[[flex-doc,7]]] Flex zvanična dokumentacija, https://westes.github.io/flex/manual/, Avgust 2019.
 * [[[bison-doc,8]]] Bison zvanična dokumentacija, https://www.gnu.org/software/bison/manual/, Avgust 2019.
 * [[[cjson-doc,9]]] cJSON repozitorijum, https://github.com/DaveGamble/cJSON, Avgust 2019.
